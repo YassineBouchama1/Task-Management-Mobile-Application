@@ -11,7 +11,7 @@ import { Task } from '~/types/task';
 
 const DashboardScreen = () => {
   const { tasks } = useTaskStore();
-  const { startTask, endTask, isLoading } = useTaskActions();
+  const {  endTask } = useTaskActions();
 
   // Memoized task filtering
   const completedTasks = useMemo(

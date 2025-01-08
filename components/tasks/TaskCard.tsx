@@ -5,6 +5,7 @@ import { Link } from 'expo-router';
 import { Task, TaskStatus } from '~/types/task';
 import { formatDuration, formatTime } from '~/utils';
 import { useElapsedTime } from '~/hooks/useElapsedTime';
+import { useOpenGoogleMaps } from '~/hooks/useopenGoogleMaps';
 
 interface TaskCardProps {
   task: Task;
@@ -35,27 +36,7 @@ const TaskCard = memo(({ task, onStartTask, onEndTask, isLoading }: TaskCardProp
     ? formatDuration(task.estimatedCompletionTime)
     : 'N/A';
 
-  // Function to open Google Maps with the appropriate location
-  const openGoogleMaps = () => {
-    let location = null;
 
-    if (task.status === 'Completed' && task.endLocation) {
-      location = task.endLocation;
-    } else if (task.status === 'In Progress' && task.startLocation) {
-      location = task.startLocation;
-    }
-
-    if (location) {
-      const { latitude, longitude } = location;
-      const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-
-      Linking.openURL(url).catch(() => {
-        Alert.alert('Error', 'Unable to open Google Maps.');
-      });
-    } else {
-      Alert.alert('Error', 'No location available for this task.');
-    }
-  };
 
   return (
     <View style={styles.taskCard}>
@@ -121,7 +102,7 @@ const TaskCard = memo(({ task, onStartTask, onEndTask, isLoading }: TaskCardProp
 
         {/* Map Button */}
         {(task.status === 'Completed' || task.status === 'In Progress') && (
-          <TouchableOpacity onPress={openGoogleMaps} style={styles.mapButton}>
+          <TouchableOpacity onPress={()=>useOpenGoogleMaps(task)} style={styles.mapButton}>
             <Ionicons name="map-outline" size={16} color="#1976D2" />
             <Text style={styles.mapButtonText}>Map</Text>
           </TouchableOpacity>
