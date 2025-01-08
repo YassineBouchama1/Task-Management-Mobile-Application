@@ -1,16 +1,16 @@
-// components/TaskList.tsx
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Link } from 'expo-router'; // Import Link from expo-router
+import { Link } from 'expo-router'; 
 import useTaskStore from '~/store/taskStore';
 import useTaskActions from '~/hooks/useTaskActions';
+import { Task } from '~/types/task';
 
 
 const TaskList = () => {
   const { tasks, filter, setFilter } = useTaskStore();
   const { startTask, endTask, isLoading } = useTaskActions();
 
-  const filteredTasks = filter === 'All' ? tasks : tasks.filter((task) => task.status === filter);
+  const filteredTasks = filter === 'All' ? tasks : tasks.filter((task:Task) => task.status === filter);
 
   const handleStartTask = (taskId: string) => {
     Alert.alert('Start Task', 'Are you sure you want to start this task?', [
@@ -57,7 +57,7 @@ const TaskList = () => {
             <Link
               href={{
                 pathname: '/details/[id]',
-                params: { id: item.id }, // Pass task ID as a parameter
+                params: { id: item.id }, 
               }}>
               <Text style={styles.taskTitle}>{item.title}</Text>
             </Link>
