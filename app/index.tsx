@@ -2,15 +2,16 @@ import { Redirect } from 'expo-router';
 import { useAuth } from '~/providers/AuthProvider';
 
 export default function Index() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated ,acceptedTerms} = useAuth();
 
-  console.log('Index isAuthenticated:', isAuthenticated);
 
 
   // here we check if the user is authenticated
   // if they are, we redirect them to the tabs layout
   if (isAuthenticated) {
-    return <Redirect href="/(tabs)" />;
+
+
+    return acceptedTerms ? <Redirect href="/(tabs)" /> : <Redirect href="/(auth)/terms" />;
   } else {
     return <Redirect href="/(auth)/login" />;
   }

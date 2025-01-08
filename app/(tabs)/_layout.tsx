@@ -3,7 +3,7 @@ import { TabBarIcon } from '~/components/TabBarIcon';
 
 const TabsLayout = () => {
   return (
-    <Tabs>
+    <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
         name="index"
         options={{

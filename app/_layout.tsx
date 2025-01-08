@@ -2,6 +2,7 @@ import React from 'react';
 import { Slot, SplashScreen } from 'expo-router';
 import { useEffect, useState } from 'react';
 import AuthProvider, { useAuth } from '~/providers/AuthProvider';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -19,7 +20,7 @@ function RootLayoutNav() {
     return null;
   }
 
-  return <Slot />;
+  return <SafeAreaProvider><Slot /></SafeAreaProvider>
 }
 
 export default function RootLayout() {
