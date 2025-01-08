@@ -11,42 +11,43 @@ const TabsLayout = () => {
     }, []);
 
   return (
-    <Tabs screenOptions={{ headerShown: false  ,
- tabBarStyle: {
-          height: 80, 
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          height: 80,
           paddingBottom: 10,
         },
         tabBarItemStyle: {
-          margin: 5, 
-          justifyContent: 'center', 
-          alignItems: 'center', 
+          margin: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
         },
         tabBarLabelStyle: {
-          fontSize: 14, 
-          marginBottom: 5, 
+          fontSize: 14,
+          marginBottom: 5,
         },
-
-
-    }} >
+        tabBarActiveTintColor: '#1976D2',
+      }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home"  color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <Tabs.Screen
         name="tasks"
         options={{
           title: 'Tasks',
-          tabBarIcon: ({ color }) => <TabBarIcon name="tasks"  color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="tasks" color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user"  color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>

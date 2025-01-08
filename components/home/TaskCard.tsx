@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Linking, Alert } from 
 import { Ionicons } from '@expo/vector-icons';
 import { Task } from '~/types/task';
 import { formatTime } from '~/utils';
-import { useOpenGoogleMaps } from '~/hooks/useopenGoogleMaps';
+import { useOpenGoogleMaps } from '~/hooks/useOpenGoogleMaps';
 
 type TaskCardProps = {
   task: Task;

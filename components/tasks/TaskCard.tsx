@@ -5,7 +5,7 @@ import { Link } from 'expo-router';
 import { Task, TaskStatus } from '~/types/task';
 import { formatDuration, formatTime } from '~/utils';
 import { useElapsedTime } from '~/hooks/useElapsedTime';
-import { useOpenGoogleMaps } from '~/hooks/useopenGoogleMaps';
+import { useOpenGoogleMaps } from '~/hooks/useOpenGoogleMaps';
 
 interface TaskCardProps {
   task: Task;

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useTaskStore from '~/store/taskStore';
@@ -7,11 +7,13 @@ import EmptyState from '~/components/home/EmptyState';
 import StatsCard from '~/components/home/StatsCard';
 import useTaskActions from '~/hooks/useTaskActions';
 import { Task } from '~/types/task';
+import TaskProgressChart from '~/components/charts/TaskProgressChart';
 
 
 const DashboardScreen = () => {
   const { tasks } = useTaskStore();
   const {  endTask } = useTaskActions();
+  const [filter, setFilter] = useState<'30days' | '90days' | 'lifetime'>('30days');
 
   // Memoized task filtering
   const completedTasks = useMemo(
@@ -76,6 +78,17 @@ const DashboardScreen = () => {
           />
         </View>
 
+        <View style={styles.sectionHeader}>
+          <View style={styles.sectionTitleContainer}>
+            <Text style={styles.sectionTitle}>Charts</Text>
+            <View style={styles.taskCountBadge}>
+              <Text style={styles.taskCountText}>{tasks?.length}</Text>
+            </View>
+          </View>
+       
+        </View>
+        <TaskProgressChart />
+
         <View style={styles.taskSection}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleContainer}>
@@ -84,9 +97,7 @@ const DashboardScreen = () => {
                 <Text style={styles.taskCountText}>{activeTasks.length}</Text>
               </View>
             </View>
-            <TouchableOpacity>
-              <Ionicons name="chevron-forward" size={24} color="#000" />
-            </TouchableOpacity>
+       
           </View>
 
           {activeTasks.length === 0 ? renderEmptyState() : renderTaskCards()}
