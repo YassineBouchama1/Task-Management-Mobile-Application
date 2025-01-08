@@ -1,5 +1,5 @@
 import { View, Text, Button } from 'react-native';
-import useAuth from '~/hooks/useAuth';
+import { useAuth } from '~/providers/AuthProvider';
 
 const ProfileScreen = () => {
   const { logout } = useAuth();

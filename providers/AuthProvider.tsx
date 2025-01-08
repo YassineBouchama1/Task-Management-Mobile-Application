@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useLayoutEffect } from 'react';
 import { getData, storeData, removeData } from '../utils/storage';
+import { AuthError, LoginSchema } from '~/types/auth';
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -35,11 +36,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 
         //TODO : Added Validation with Zod
+              const validatedCredentials = LoginSchema.safeParse({ username, password });
+
+              if (!validatedCredentials.success) {
+                throw new AuthError(
+                  'Validation failed',
+                  'VALIDATION_ERROR',
+                  validatedCredentials.error.flatten().fieldErrors
+                );
+              }
+
       if (username === 'user' && password === 'password') {
         await storeData('authToken', 'dummy-token');
         setIsAuthenticated(true);
       } else {
-        throw new Error('Invalid credentials');
+               throw new AuthError('Invalid credentials', 'INVALID_CREDENTIALS');
+
       }
     } catch (error) {
       console.error('Login error:', error);

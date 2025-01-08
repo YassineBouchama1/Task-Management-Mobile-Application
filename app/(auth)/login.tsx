@@ -3,20 +3,19 @@ import { View, TextInput, Text, TouchableOpacity, Image, StyleSheet, Alert } fro
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useAuth } from '~/providers/AuthProvider';
+import { AuthError } from '~/types/auth';
 
 const logo = require('~/assets/icon.png');
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const { isAuthenticated, login } = useAuth();
   const router = useRouter();
 
-  // here redirect to tabs if already authenticated
   useFocusEffect(
     useCallback(() => {
-      console.log('login screen');
-
       if (isAuthenticated) {
         router.replace('/(tabs)');
       }
@@ -27,15 +26,23 @@ export default function Login() {
     router.replace('/(tabs)');
   }
 
-  // handle login
+
+
   const handleLogin = async () => {
     try {
+      setErrors({}); // here clear prev errors
       await login(username, password);
-      router.replace('/(tabs)'); // after login redirect to tabs
-    } catch (error) {
-      Alert.alert('Error', 'Invalid credentials');
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      
+      if (error instanceof AuthError && error.code === 'VALIDATION_ERROR') {
+        setErrors(error.details || {});
+      } else {
+        Alert.alert('Error', error.message || 'Invalid credentials');
+      }
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -51,6 +58,7 @@ export default function Login() {
           onChangeText={setUsername}
         />
       </View>
+      {errors.username && <Text style={styles.errorText}>{errors.username.join(', ')}</Text>}
 
       <View style={styles.inputContainer}>
         <Ionicons name="lock-closed-outline" size={25} style={styles.icon} />
@@ -62,6 +70,7 @@ export default function Login() {
           secureTextEntry
         />
       </View>
+      {errors.password && <Text style={styles.errorText}>{errors.password.join(', ')}</Text>}
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
@@ -107,11 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
   },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: 20,
-    color: '#000',
-  },
   button: {
     width: '100%',
     height: 50,
@@ -124,12 +128,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-  },
-  signUp: {
-    color: '#000',
-  },
-  signUpLink: {
-    color: '#1E90FF',
   },
   errorText: {
     color: 'red',
