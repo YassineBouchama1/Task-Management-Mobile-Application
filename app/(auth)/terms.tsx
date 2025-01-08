@@ -25,6 +25,8 @@ export default function TermsScreen() {
   };
 
 
+  
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Terms and Conditions</Text>

@@ -1,7 +1,15 @@
 import { Tabs } from 'expo-router';
+import { useEffect } from 'react';
 import { TabBarIcon } from '~/components/TabBarIcon';
+import { requestNotificationPermissions } from '~/services/notificationService';
 
 const TabsLayout = () => {
+
+  // reqyest permission for notification
+    useEffect(() => {
+      requestNotificationPermissions();
+    }, []);
+
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
