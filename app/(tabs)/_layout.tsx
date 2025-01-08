@@ -11,7 +11,23 @@ const TabsLayout = () => {
     }, []);
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs screenOptions={{ headerShown: false  ,
+ tabBarStyle: {
+          height: 80, 
+          paddingBottom: 10,
+        },
+        tabBarItemStyle: {
+          margin: 5, 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+        },
+        tabBarLabelStyle: {
+          fontSize: 14, 
+          marginBottom: 5, 
+        },
+
+
+    }} >
       <Tabs.Screen
         name="index"
         options={{

@@ -1,120 +1,89 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { Link } from 'expo-router'; 
+import React, { useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import useTaskStore from '~/store/taskStore';
 import useTaskActions from '~/hooks/useTaskActions';
+import TaskCard from '~/components/tasks/TaskCard';
+import SearchBar from '~/components/tasks/SearchBar';
+import TaskFilters from '~/components/tasks/TaskFilters';
 import { Task } from '~/types/task';
 
-
 const TaskList = () => {
-  const { tasks, filter, setFilter } = useTaskStore();
+  const getFilteredTasks = useTaskStore((state) => state.getFilteredTasks);
   const { startTask, endTask, isLoading } = useTaskActions();
 
-  const filteredTasks = filter === 'All' ? tasks : tasks.filter((task:Task) => task.status === filter);
+  const handleStartTask = useCallback(
+    (taskId: string) => {
+      Alert.alert('Start Task', 'Are you sure you want to start this task?', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Start', onPress: () => startTask(taskId) },
+      ]);
+    },
+    [startTask]
+  );
 
-  const handleStartTask = (taskId: string) => {
-    Alert.alert('Start Task', 'Are you sure you want to start this task?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Start', onPress: () => startTask(taskId) },
-    ]);
-  };
+  const handleEndTask = useCallback(
+    (taskId: string) => {
+      Alert.alert('End Task', 'Are you sure you want to end this task?', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'End', onPress: () => endTask(taskId) },
+      ]);
+    },
+    [endTask]
+  );
 
-  const handleEndTask = (taskId: string) => {
-    Alert.alert('End Task', 'Are you sure you want to end this task?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'End', onPress: () => endTask(taskId) },
-    ]);
-  };
+  const renderTask = useCallback(
+    ({ item }) => (
+      <TaskCard
+        task={item}
+        onStartTask={handleStartTask}
+        onEndTask={handleEndTask}
+        isLoading={isLoading}
+      />
+    ),
+    [handleStartTask, handleEndTask, isLoading]
+  );
 
   return (
-    <View style={styles.container}>
-      {/* Filter Buttons */}
-      <View style={styles.filterContainer}>
-        <TouchableOpacity onPress={() => setFilter('All')}>
-          <Text style={filter === 'All' ? styles.activeFilter : styles.filter}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setFilter('Pending')}>
-          <Text style={filter === 'Pending' ? styles.activeFilter : styles.filter}>Pending</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setFilter('In Progress')}>
-          <Text style={filter === 'In Progress' ? styles.activeFilter : styles.filter}>
-            In Progress
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setFilter('Completed')}>
-          <Text style={filter === 'Completed' ? styles.activeFilter : styles.filter}>
-            Completed
-          </Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Task List</Text>
+        <TouchableOpacity>
+          <Ionicons name="notifications-outline" size={24} color="#000" />
         </TouchableOpacity>
       </View>
 
-      {/* Task List */}
+      <SearchBar />
+      <TaskFilters />
+
       <FlatList
-        data={filteredTasks}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.taskItem}>
-            <Link
-              href={{
-                pathname: '/details/[id]',
-                params: { id: item.id }, 
-              }}>
-              <Text style={styles.taskTitle}>{item.title}</Text>
-            </Link>
-            <Text style={styles.taskStatus}>{item.status}</Text>
-            {item.status === 'In Progress' && (
-              <TouchableOpacity onPress={() => handleEndTask(item.id)} disabled={isLoading}>
-                <Text style={styles.actionButton}>End Task</Text>
-              </TouchableOpacity>
-            )}
-            {item.status === 'Pending' && (
-              <TouchableOpacity onPress={() => handleStartTask(item.id)} disabled={isLoading}>
-                <Text style={styles.actionButton}>Start Task</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
+        data={getFilteredTasks()}
+        renderItem={renderTask}
+        keyExtractor={useCallback((item:Task) => item.id, [])}
+        contentContainerStyle={styles.listContainer}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: '#F5F7FA',
   },
-  filterContainer: {
+  header: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 16,
-  },
-  filter: {
-    fontSize: 16,
-    color: '#666',
-  },
-  activeFilter: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  taskItem: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
-  taskTitle: {
-    fontSize: 16,
+  headerTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'blue', // Make it look like a link
   },
-  taskStatus: {
-    fontSize: 14,
-    color: 'green',
-  },
-  actionButton: {
-    color: 'blue',
-    fontSize: 14,
+  listContainer: {
+    padding: 16,
+    gap: 12,
   },
 });
 
