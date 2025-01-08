@@ -19,7 +19,7 @@ const TaskCard = ({ task, onCompleteTask }: TaskCardProps) => {
       <View style={styles.taskHeader}>
         <View style={styles.userInfo}>
           <View style={styles.avatar}>
-            <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.avatarImage} />
+            <Image source={require('~/assets/profile.jpg')} style={styles.avatarImage} />
           </View>
           <Text style={styles.userName}>Yassine</Text>
         </View>

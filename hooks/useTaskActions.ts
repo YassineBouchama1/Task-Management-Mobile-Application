@@ -70,25 +70,36 @@ const useTaskActions = () => {
     }
   };
 
-  const uploadPhoto = async (taskId: string) => {
-    setIsLoading(true);
-    try {
+const uploadPhoto = async (taskId: string, photoUri?: string) => {
+  setIsLoading(true);
+  try {
+    let uri = photoUri;
+
+    // chekc if no photoUri is provided
+    // if not  use the image picker
+    if (!uri) {
       const result = await pickImage();
-      if (!result.canceled) {
-        const task = useTaskStore.getState().tasks.find((t: Task) => t.id === taskId);
-        if (task) {
-          updateTask(taskId, {
-            photos: [...(task.photos || []), result.assets[0].uri],
-          });
-        }
+      if (result.canceled) {
+        setIsLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error('Error uploading photo:', error);
-      alert('Failed to upload photo. Please try again.');
-    } finally {
-      setIsLoading(false);
+      uri = result.assets[0].uri;
     }
-  };
+
+    // save the photo to the task
+    const task = useTaskStore.getState().tasks.find((t: Task) => t.id === taskId);
+    if (task) {
+      updateTask(taskId, {
+        photos: [...(task.photos || []), uri],
+      });
+    }
+  } catch (error) {
+    console.error('Error uploading photo:', error);
+    alert('Failed to upload photo. Please try again.');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return {
     startTask,

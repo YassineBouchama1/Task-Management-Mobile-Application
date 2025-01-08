@@ -43,7 +43,8 @@
     "zustand": "^4.5.1",
     "expo-location": "~18.0.4",
     "expo-image-picker": "~16.0.3",
-    "expo-notifications": "~0.29.11"
+    "expo-notifications": "~0.29.11",
+    "expo-media-library": "~17.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

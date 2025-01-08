@@ -29,7 +29,7 @@ export const scheduleNotification = async (title: string, body: string, seconds:
     },
     trigger: { seconds },
   });
-};s
+};
 
 // here get the Expo push token
 export const getExpoPushToken = async () => {
