@@ -1,16 +1,14 @@
 import React, { useMemo, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import useTaskStore from '~/store/taskStore';
+import useTaskStore, { TaskStore } from '~/store/taskStore';
 import { TaskStatus } from '~/types/task';
 
 const TaskFilters = () => {
-  const filter = useTaskStore((state) => state.filter);
-  const setFilter = useTaskStore((state) => state.setFilter);
+  const filter = useTaskStore((state: TaskStore) => state.filter);
+  const setFilter = useTaskStore((state: TaskStore) => state.setFilter);
 
-  const filterOptions = useMemo(
-    () => (['All'] as const).concat(['Pending', 'In Progress', 'Completed'] as TaskStatus[]),
-    []
-  );
+const filterOptions = useMemo(() => ['All', 'Pending', 'In Progress', 'Completed'] as const, []);
+
 
   const handleFilterPress = useCallback(
     (newFilter: TaskStatus | 'All') => {

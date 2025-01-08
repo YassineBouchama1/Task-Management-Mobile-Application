@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import useTaskStore from '~/store/taskStore';
+import useTaskStore, { TaskStore } from '~/store/taskStore';
 import useTaskActions from '~/hooks/useTaskActions';
 import TaskCard from '~/components/tasks/TaskCard';
 import SearchBar from '~/components/tasks/SearchBar';
@@ -9,7 +9,7 @@ import TaskFilters from '~/components/tasks/TaskFilters';
 import { Task } from '~/types/task';
 
 const TaskList = () => {
-  const getFilteredTasks = useTaskStore((state) => state.getFilteredTasks);
+  const getFilteredTasks = useTaskStore((state: TaskStore) => state.getFilteredTasks);
   const { startTask, endTask, isLoading } = useTaskActions();
 
   const handleStartTask = useCallback(
@@ -33,7 +33,7 @@ const TaskList = () => {
   );
 
   const renderTask = useCallback(
-    ({ item }) => (
+    ({ item }:{item:Task}) => (
       <TaskCard
         task={item}
         onStartTask={handleStartTask}

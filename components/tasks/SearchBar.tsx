@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import useTaskStore from '~/store/taskStore';
+import useTaskStore, { TaskStore } from '~/store/taskStore';
 
 const SearchBar = () => {
-  const setSearchQuery = useTaskStore((state) => state.setSearchQuery);
-  const searchQuery = useTaskStore((state) => state.searchQuery);
+  const setSearchQuery = useTaskStore((state: TaskStore) => state.setSearchQuery);
+  const searchQuery = useTaskStore((state: TaskStore) => state.searchQuery);
 
   const handleSearch = useCallback(
     (text: string) => {

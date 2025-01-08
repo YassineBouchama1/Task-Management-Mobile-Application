@@ -55,10 +55,7 @@ const TaskList = () => {
     [handleStartTask, handleEndTask, isLoading]
   );
 
-  const filterOptions = useMemo(
-    () => (['All'] as const).concat(Object.values(['Pending', 'In Progress', 'Completed'])),
-    []
-  );
+const filterOptions = useMemo(() => ['All', 'Pending', 'In Progress', 'Completed'] as const, []);
 
   return (
     <SafeAreaView style={styles.container}>
