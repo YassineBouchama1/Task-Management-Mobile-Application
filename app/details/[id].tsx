@@ -6,23 +6,21 @@ import useTaskStore from '~/store/taskStore';
 import { Task } from '~/types/task';
 
 const TaskDetails = () => {
-  // Extract task ID from URL params
   const { id: taskIdParam } = useLocalSearchParams();
   const taskId = Array.isArray(taskIdParam) ? taskIdParam[0] : taskIdParam;
 
-  // Fetch tasks from the store and task actions
   const { tasks } = useTaskStore();
   const { addComment, uploadPhoto, isLoading } = useTaskActions();
   const [comment, setComment] = useState('');
 
-  // Memoize the task to avoid unnecessary recalculations
+  // the task to avoid unnecessary recalculations
   const task = useMemo(() => tasks.find((t: Task) => t.id === taskId), [tasks, taskId]);
 
-  // Memoized function to handle adding a comment
+  // memo function to handle adding a comment
   const handleAddComment = useCallback(() => {
     if (comment.trim()) {
-      addComment(taskId, comment); // Add comment to the task
-      setComment(''); // Clear the input field
+      addComment(taskId, comment); 
+      setComment(''); 
     } else {
       Alert.alert('Error', 'Comment cannot be empty.');
     }
@@ -37,11 +35,11 @@ const TaskDetails = () => {
  const navigateToCamera = () => {
    router.push({
      pathname: '/camera',
-     params: { taskId }, // Pass the taskId to the CameraCapture page
+     params: { taskId }, 
    });
  };
 
-  // Display loading indicator if data is being fetched or processed
+  // display loading indicator if data is being fetched or processed
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -87,7 +85,6 @@ const TaskDetails = () => {
   );
 };
 
-// Modern and clean styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

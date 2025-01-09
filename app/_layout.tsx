@@ -5,7 +5,7 @@ import AuthProvider, { useAuth } from '~/providers/AuthProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export const unstable_settings = {
-  initialRouteName: '(tabs)',
+  initialRouteName: '(tabs)/tasks',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -20,7 +20,11 @@ function RootLayoutNav() {
     return null;
   }
 
-  return <SafeAreaProvider><Slot /></SafeAreaProvider>
+  return (
+    <SafeAreaProvider>
+      <Slot />
+    </SafeAreaProvider>
+  );
 }
 
 export default function RootLayout() {

@@ -32,7 +32,7 @@ export default function Login() {
     try {
       setErrors({}); // here clear prev errors
       await login(username, password);
-      router.replace('/(tabs)');
+      router.replace('/(auth)/terms');
     } catch (error: any) {
       
       if (error instanceof AuthError && error.code === 'VALIDATION_ERROR') {

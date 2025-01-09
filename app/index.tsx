@@ -1,9 +1,9 @@
 import { Redirect } from 'expo-router';
+import { Text, View } from 'react-native';
 import { useAuth } from '~/providers/AuthProvider';
 
 export default function Index() {
-  const { isAuthenticated ,acceptedTerms} = useAuth();
-
+  const { isAuthenticated ,acceptedTerms ,isLoading} = useAuth();
 
 
   // here we check if the user is authenticated
@@ -11,7 +11,7 @@ export default function Index() {
   if (isAuthenticated) {
 
 
-    return acceptedTerms ? <Redirect href="/(tabs)" /> : <Redirect href="/(auth)/terms" />;
+    return acceptedTerms ? <Redirect href="/(tabs)/tasks" /> : <Redirect href="/(auth)/terms" />;
   } else {
     return <Redirect href="/(auth)/login" />;
   }

@@ -2,14 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import useTaskStore from '~/store/taskStore';
-import { TaskStatus } from '~/types/task';
+import { Task, TaskStatus } from '~/types/task';
 
 const TaskProgressChart: React.FC = () => {
   const { tasks } = useTaskStore();
 
   // cunt tasks by status
   const taskCounts = tasks.reduce(
-    (acc, task) => {
+    (acc, task: Task) => {
       acc[task.status]++;
       return acc;
     },
@@ -46,7 +46,7 @@ const TaskProgressChart: React.FC = () => {
       <View style={styles.chartContainer}>
         <PieChart
           data={chartData}
-          width={Dimensions.get('window').width - 32} 
+          width={Dimensions.get('window').width - 32}
           height={200}
           chartConfig={{
             backgroundColor: '#ffffff',
@@ -59,14 +59,13 @@ const TaskProgressChart: React.FC = () => {
           backgroundColor="transparent"
           paddingLeft="80"
           absolute
-          hasLegend={false} 
-          center={[0, 0]} 
+          hasLegend={false}
+          center={[0, 0]}
           avoidFalseZero
           style={styles.chart}
         />
       </View>
 
-   
       <View style={styles.legendContainer}>
         {chartData.map((item, index) => (
           <View key={index} style={styles.legendItem}>
@@ -90,16 +89,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   chartContainer: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
- 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   chart: {
     borderRadius: 8,
-    
   },
   legendContainer: {
     flexDirection: 'row',

@@ -18,7 +18,7 @@ export default function TermsScreen() {
       console.log('Location tracking consent:', locationConsent);
       
       await handleAcceptedTerms();
-      router.replace('/(tabs)');
+      router.push('/(tabs)/tasks');
     } else {
       alert('You must agree to the Terms and Conditions to proceed.');
     }

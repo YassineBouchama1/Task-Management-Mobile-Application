@@ -13,7 +13,6 @@ import TaskProgressChart from '~/components/charts/TaskProgressChart';
 const DashboardScreen = () => {
   const { tasks } = useTaskStore();
   const {  endTask } = useTaskActions();
-  const [filter, setFilter] = useState<'30days' | '90days' | 'lifetime'>('30days');
 
   // Memoized task filtering
   const completedTasks = useMemo(
